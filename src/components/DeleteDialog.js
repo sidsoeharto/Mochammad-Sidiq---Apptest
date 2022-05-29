@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Text, StyleSheet,View,Modal} from 'react-native';
-// import {Dialog} from '@rneui/themed';
-import Dialog from "react-native-dialog";
+import {Text, StyleSheet,View} from 'react-native';
+import Dialog from 'react-native-dialog';
 import tw from 'twrnc';
 
 import { useDispatch } from 'react-redux';
@@ -12,9 +11,10 @@ const DeleteDialog = ({visible, id, toggleDialog}) => {
   const dispatch = useDispatch();
 
   const handleDelete = async () => {
+    console.log(id);
     await dispatch(deleteContact(id));
 
-    return toggleDialog;
+    toggleDialog();
   };
 
   return (
@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     tw`text-center font-semibold text-md text-gray-100 mb-4`,
   ],
   buttonContainer: [
-    tw`flex flex-row gap-x-6 justify-center`
-  ]
-})
+    tw`flex flex-row gap-x-6 justify-center`,
+  ],
+});
 
 export default DeleteDialog;

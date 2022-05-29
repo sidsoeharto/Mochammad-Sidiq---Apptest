@@ -4,13 +4,12 @@ import {
   TextInput,
   ScrollView,
   View,
-  Button,
   Text,
-  StyleSheet
+  StyleSheet,
+  Pressable,
 } from 'react-native';
 import tw from 'twrnc';
-import { Header, Section } from '../components';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import { createContact } from '../store/actions';
 
 const Create = ({navigation}) => {
@@ -19,7 +18,7 @@ const Create = ({navigation}) => {
   const [dataForm, setDataForm] = useState({
     firstName:'',
     lastName:'',
-    age:0,
+    age:'',
     photo:'',
   });
 
@@ -33,7 +32,7 @@ const Create = ({navigation}) => {
   const handleSubmit = async (payload) => {
     await dispatch(createContact(payload));
 
-    return navigation.navigate("Home");
+    return navigation.navigate('Simple Contacts');
   };
 
   React.useEffect(() => {
@@ -41,9 +40,9 @@ const Create = ({navigation}) => {
       setDataForm({
         firstName:'',
         lastName:'',
-        age:0,
+        age:'',
         photo:'',
-      })
+      });
     });
 
     return unsubscribe;
@@ -53,7 +52,6 @@ const Create = ({navigation}) => {
     <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={[tw`w-full`, {backgroundColor: '#161621'}]}>
-        <Header />
         <View style={tw`p-8`}>
           <View
             style={styles.inputField}
@@ -96,8 +94,8 @@ const Create = ({navigation}) => {
             <TextInput
               style={styles.input}
               keyboardType={'numeric'}
-              maxLength={3}
-              onChangeText={(val) => handleChange(val, 'age')}
+              maxLength={2}
+              onChangeText={(val) => handleChange(Number(val), 'age')}
               value={dataForm.age}
             />
           </View>
@@ -115,11 +113,12 @@ const Create = ({navigation}) => {
               value={dataForm.photo}
             />
           </View>
-          <Button
+          <Pressable
             style={styles.buttonSubmit}
-            title={'Submit'}
             onPress={() => handleSubmit(dataForm)}
-          />
+          >
+            <Text style={styles.submitText}>Submit</Text>
+          </Pressable>
         </View>
     </ScrollView>
   );
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
       fontFamily: 'Palanquin-SemiBold',
       fontWeight: '600',
       fontSize: 16,
-    }
+    },
   ],
   input:[
     tw`bg-gray-700 border border-gray-900 text-gray-100 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-3`,
@@ -140,17 +139,25 @@ const styles = StyleSheet.create({
       fontFamily: 'Palanquin-Regular',
       fontWeight: '500',
       fontSize: 14,
-    }
+    },
   ],
   inputField: [
-    tw`mb-1`
+    tw`mb-1`,
   ],
   inputFieldLast: [
-    tw`mb-8`
+    tw`mb-8`,
   ],
   buttonSubmit: [
-    tw`py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-green-800 rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700`
-  ]
+    tw`py-1.5 px-2 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-sky-500 rounded-xl border border-gray-200 hover:bg-gray-100 hover:text-blue-700`,
+  ],
+  submitText: [
+    tw`text-white text-center font-semibold`,
+    {
+      fontFamily: 'Palanquin-SemiBold',
+      fontWeight: '600',
+      fontSize: 16,
+    },
+  ],
 });
 
 export default Create;

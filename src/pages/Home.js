@@ -1,30 +1,29 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   ScrollView,
   View,
+  StyleSheet,
 } from 'react-native';
 import tw from 'twrnc';
-import { Header, Section } from '../components';
-import {useDispatch, useSelector, } from 'react-redux';
+import {Section} from '../components';
 import {fetchContacts} from '../store/actions';
+import { connect } from 'react-redux';
 
-const Home = ({navigation}) => {
-  const dispatch = useDispatch();
-
+const Home = ({navigation, ...props}) => {
   useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      dispatch(fetchContacts());
+    });
+    return unsubscribe;
+  }, [dispatch, navigation]);
 
-  const contacts = useSelector((state) => state.contacts);
-
-  console.log(contacts, 'dari home');
+  const { contacts, dispatch } = props;
 
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
-      style={[tw`w-full`, {backgroundColor: '#161621'}]}>
-      <Header />
+      style={styles.scrollView}>
       <View>
         {contacts.map((el, idx) => <Section
             key={idx}
@@ -32,14 +31,30 @@ const Home = ({navigation}) => {
             title={`${el.firstName} ${el.lastName}`}
             imageUrl={el.photo}
             navigation={navigation}
+            avatarName={`${el.firstName[0].toUpperCase()}${el.lastName[0].toUpperCase()}`}
           >
             Age: {el.age}
           </Section>
         )}
-        {/* <LearnMoreLinks /> */}
       </View>
     </ScrollView>
   );
 };
 
-export default Home;
+const styles = StyleSheet.create({
+  scrollView:[
+    tw`w-full pb-8`,
+    {
+      backgroundColor: '#161621',
+    },
+  ],
+});
+
+function mapStateToProps(state) {
+  const { contacts } = state;
+  return {
+    contacts,
+  };
+}
+
+export default connect(mapStateToProps)(Home);

@@ -25,8 +25,8 @@ export const fetchContacts = () => (dispatch, getState) => {
     .catch(err => {
       console.log(err);
       // return dispatch(setError(err));
-    })
-}
+    });
+};
 
 export const fetchContact = (id) => (dispatch, getState) => {
   axios({
@@ -40,8 +40,8 @@ export const fetchContact = (id) => (dispatch, getState) => {
     .catch(err => {
       console.log(err);
       // return dispatch(setError(err));
-    })
-}
+    });
+};
 
 export const deleteContact = (id) => (dispatch, getState) => {
   axios({
@@ -55,8 +55,8 @@ export const deleteContact = (id) => (dispatch, getState) => {
     .catch(err => {
       console.log(err, 'ini error');
       // return dispatch(setError(err));
-    })
-}
+    });
+};
 
 export const createContact = (data) => (dispatch, getState) => {
   axios({
@@ -71,8 +71,8 @@ export const createContact = (data) => (dispatch, getState) => {
     .catch(err => {
       console.log(err);
       // return dispatch(setError(err));
-    })
-}
+    });
+};
 
 export const updateContact = (data, id) => (dispatch, getState) => {
   axios({
@@ -81,12 +81,12 @@ export const updateContact = (data, id) => (dispatch, getState) => {
     data: data,
   })
     .then(res => {
-      console.log(res.data.data);
+      console.log(res.data);
       return fetchContacts();
     })
     .catch(err => {
       console.log(err);
       // return dispatch(setError(err));
-    })
-}
+    });
+};
 

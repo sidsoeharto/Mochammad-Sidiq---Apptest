@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import { Avatar, Icon, Button } from '@rneui/themed';
+import { Avatar, Icon } from '@rneui/themed';
 import {DeleteDialog} from './index';
 import tw from 'twrnc';
 
 
-const Section = ({children, title, imageUrl, id, navigation}) => {
+const Section = ({children, title, imageUrl, id, navigation, avatarName}) => {
   const [visible, setVisible] = useState(false);
 
   const toggleDialog = () => {
@@ -14,45 +14,29 @@ const Section = ({children, title, imageUrl, id, navigation}) => {
   };
 
   return (
-    <View style={[
-        styles.sectionContainer,
-        tw`flex flex-row w-full`,
-      ]}
+    <View style={styles.sectionContainer}
     >
       <Avatar
         activeOpacity={0.2}
-        avatarStyle={{
-          flex: 1,
-        }}
-        containerStyle={{ backgroundColor: "#BBBBBB" }}
+        avatarStyle={{}}
+        // containerStyle={{ backgroundColor: '#BBBBBB' }}
         icon={{}}
         iconStyle={{}}
         imageProps={{}}
-        onLongPress={() => alert("onLongPress")}
-        onPress={() => alert("onPress")}
-        overlayContainerStyle={{}}
+        overlayContainerStyle={{backgroundColor: ('#' + Math.floor(Math.random() * 16777215).toString(16))}}
         placeholderStyle={{}}
         rounded
         size={75}
         source={{ uri: imageUrl }}
-        title="P"
+        title={avatarName}
         titleStyle={{}}
       />
-      <View style={[
-        styles.sectionContainer,
-        tw`flex flex-col mt-0`,
-        {
-          flex: 2,
-        }
-      ]}>
-        <Text style={tw`text-lg text-gray-200`}>
+      <View style={styles.sectionContent}>
+        <Text style={styles.sectionTitle}>
           {title}
         </Text>
         <Text
-          style={[
-            styles.sectionDescription,
-            tw`text-lg text-gray-300`,
-          ]}>
+          style={styles.sectionDescription}>
           {children}
         </Text>
       </View>
@@ -68,8 +52,7 @@ const Section = ({children, title, imageUrl, id, navigation}) => {
           iconProps={{}}
           iconStyle={{}}
           name="edit"
-          onLongPress={() => console.log("onLongPress()")}
-          onPress={() => navigation.navigate("Edit", {id})}
+          onPress={() => navigation.navigate('Edit', {id})}
           size={20}
           type="material"
         />
@@ -95,19 +78,38 @@ const Section = ({children, title, imageUrl, id, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
+  sectionContainer: [
+    tw`flex flex-row w-full mt-6`,
+    {
+      // marginTop: 32,
+      paddingHorizontal: 24,
+      flex: 2,
+    },
+  ],
+  sectionContent: [
+    tw`flex flex-col my-2`,
+    {
+      // marginTop: 32,
+      paddingHorizontal: 24,
+      flex: 2,
+    },
+  ],
+  sectionTitle: [
+    tw`text-xl text-gray-200 -mb-2`,
+    {
+      fontWeight: '600',
+      fontFamily: 'Palanquin-Bold',
+    },
+  ],
+  sectionDescription: [
+    tw`text-lg text-gray-300`,
+    {
+      marginTop: 8,
+      fontSize: 18,
+      fontWeight: '400',
+      fontFamily: 'Palanquin-Regular',
+    },
+  ],
   highlight: {
     fontWeight: '700',
   },
